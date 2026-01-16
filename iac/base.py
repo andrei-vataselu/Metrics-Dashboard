@@ -56,7 +56,7 @@ class Resource(ABC, Generic[T]):
                     success=success,
                     error=error_msg,
                 )
-            except Exception:
+            except Exception:  # noqa: B110
                 pass
 
         return result
