@@ -2,10 +2,11 @@ import logging
 import time
 from dataclasses import dataclass
 from time import sleep
+
 from botocore.exceptions import ClientError
 
 from iac.base import Resource, ResourceResult
-from iac.configs import FirehoseConfig, FirehoseClient
+from iac.configs import FirehoseClient, FirehoseConfig
 from iac.constants import ErrorCodes
 from iac.retry import retry_on_iam_propagation
 from iac.validation import ResourceValidator

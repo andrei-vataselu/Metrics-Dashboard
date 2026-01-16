@@ -1,6 +1,7 @@
 """Tests for .env file update functionality."""
 
 import pytest
+
 from config.env_updater import EnvUpdater
 
 

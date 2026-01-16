@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from collections import defaultdict, deque
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Dict, List
+
+from config.logging_config import get_logger
 
 from iac.base import Resource, ResourceResult
-from config.logging_config import get_logger
 
 logger = get_logger(__name__)
 
@@ -13,22 +14,25 @@ logger = get_logger(__name__)
 @dataclass
 class ResourceDependency:
     resource_name: str
-    depends_on: List[str]
-    factory: Callable[[Dict[str, ResourceResult]], Resource[ResourceResult]]
+    depends_on: list[str]
+    factory: Callable[[dict[str, ResourceResult]], Resource[ResourceResult]]
 
 
 class InfrastructureOrchestrator:
     def __init__(self):
-        self.resources: Dict[str, Resource[ResourceResult]] = {}
-        self.dependencies: List[ResourceDependency] = []
-        self.factories: Dict[str, Callable[[Dict[str, ResourceResult]], Resource[ResourceResult]]] = {}
+        self.resources: dict[str, Resource[ResourceResult]] = {}
+        self.dependencies: list[ResourceDependency] = []
+        self.factories: dict[
+            str, Callable[[dict[str, ResourceResult]], Resource[ResourceResult]]
+        ] = {}
 
     def register(
-        self, 
-        name: str, 
+        self,
+        name: str,
         resource: Resource[ResourceResult] | None = None,
-        depends_on: List[str] | None = None,
-        factory: Callable[[Dict[str, ResourceResult]], Resource[ResourceResult]] | None = None
+        depends_on: list[str] | None = None,
+        factory: Callable[[dict[str, ResourceResult]], Resource[ResourceResult]]
+        | None = None,
     ):
         if resource:
             self.resources[name] = resource
@@ -37,7 +41,7 @@ class InfrastructureOrchestrator:
         if depends_on and factory:
             self.dependencies.append(ResourceDependency(name, depends_on, factory))
 
-    def ensure_all(self) -> Dict[str, ResourceResult]:
+    def ensure_all(self) -> dict[str, ResourceResult]:
         order = self._topological_sort()
         results = {}
 
@@ -50,7 +54,7 @@ class InfrastructureOrchestrator:
 
         return results
 
-    def _topological_sort(self) -> List[str]:
+    def _topological_sort(self) -> list[str]:
         all_resources = set(self.resources.keys()) | set(self.factories.keys())
         graph = defaultdict(list)
         in_degree = defaultdict(int)

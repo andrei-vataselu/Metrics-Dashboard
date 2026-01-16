@@ -1,13 +1,15 @@
-import pytest
 import time
+
+import pytest
 from unittest.mock import MagicMock
+
 from botocore.exceptions import ClientError
 
-from iac.orchestrator import InfrastructureOrchestrator
+from config.main import Config
 from iac.base import Resource, ResourceResult
 from iac.bucket import Bucket
 from iac.configs import BucketConfig
-from config.main import Config
+from iac.orchestrator import InfrastructureOrchestrator
 
 
 class MockSlowResource(Resource[ResourceResult]):

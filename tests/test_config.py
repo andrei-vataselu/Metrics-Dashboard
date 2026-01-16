@@ -1,6 +1,7 @@
 """Tests for configuration loading and validation."""
 
 import pytest
+
 from config.main import Config
 
 

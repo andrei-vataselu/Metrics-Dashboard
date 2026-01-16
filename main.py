@@ -1,9 +1,9 @@
 import argparse
 
-from config.logging_config import setup_logging, get_logger
+from config.logging_config import get_logger, setup_logging
 from config.main import Config, State
-from iac.main import ensure_infra
 from iac.aws_factory import AWSClientFactory
+from iac.main import ensure_infra
 from pipeline.delivery import Ingestion
 
 setup_logging()

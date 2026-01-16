@@ -1,9 +1,10 @@
 import pytest
-from botocore.exceptions import ClientError
 from unittest.mock import patch
 
-from iac.firehose import FireHose
+from botocore.exceptions import ClientError
+
 from iac.configs import FirehoseConfig
+from iac.firehose import FireHose
 
 
 class TestFireHose:

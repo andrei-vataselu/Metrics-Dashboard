@@ -1,11 +1,14 @@
 """Tests for Lambda function creation and management."""
 
+import io
+import zipfile
+
 import pytest
-from botocore.exceptions import ClientError
 from unittest.mock import patch
 
-from iac.lambda_fn import LambdaProcessor, LambdaResult
-from iac.lambda_fn import _package_lambda_code
+from botocore.exceptions import ClientError
+
+from iac.lambda_fn import LambdaProcessor, LambdaResult, _package_lambda_code
 
 
 class TestLambdaPackaging:
@@ -19,9 +22,6 @@ class TestLambdaPackaging:
         assert zip_bytes is not None
         assert len(zip_bytes) > 0
         # Verify it's a valid zip
-        import zipfile
-        import io
-
         zip_file = zipfile.ZipFile(io.BytesIO(zip_bytes))
         assert "app.py" in zip_file.namelist()
 

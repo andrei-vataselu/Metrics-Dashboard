@@ -1,8 +1,9 @@
-import time
-import threading
 import platform
 import socket
-from typing import Optional, Callable
+import threading
+import time
+from collections.abc import Callable
+
 from config.logging_config import get_logger
 
 try:
@@ -43,7 +44,7 @@ class MetricsCollector:
             return psutil.virtual_memory().percent
         return 0.0
 
-    def _get_network_rate(self, interval_s: float) -> Optional[NetworkRate]:
+    def _get_network_rate(self, interval_s: float) -> NetworkRate | None:
         if not PSUTIL_AVAILABLE:
             return None
 
@@ -170,7 +171,7 @@ class MetricsCollector:
         interval_seconds: int = 10,
         node_role: str = "ingestion",
         env: str = "dev",
-        on_metric_callback: Optional[Callable[[Metric], None]] = None,
+        on_metric_callback: Callable[[Metric], None] | None = None,
     ):
         if self._running:
             return
@@ -201,7 +202,7 @@ class MetricsCollector:
         logger.info("Metrics listener stopped")
 
 
-_global_collector: Optional[MetricsCollector] = None
+_global_collector: MetricsCollector | None = None
 
 
 def get_collector() -> MetricsCollector:

@@ -1,11 +1,12 @@
 import logging
 import time
+from collections.abc import Callable
 from functools import wraps
-from typing import Callable, TypeVar, Tuple
+from typing import TypeVar
 
 from botocore.exceptions import ClientError
 
-from iac.constants import RetryConfig, ErrorCodes
+from iac.constants import ErrorCodes, RetryConfig
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +16,7 @@ T = TypeVar("T")
 def retry_on_iam_propagation(
     max_retries: int = RetryConfig.MAX_RETRIES,
     base_wait: int = RetryConfig.BASE_WAIT_SECONDS,
-    error_codes: Tuple[str, ...] = (
+    error_codes: tuple[str, ...] = (
         ErrorCodes.INVALID_PARAMETER,
         ErrorCodes.INVALID_ARGUMENT,
     ),

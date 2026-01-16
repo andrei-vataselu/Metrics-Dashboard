@@ -1,25 +1,24 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict
 
-from config.main import Config, State
 from config.env_updater import EnvUpdater
 from config.logging_config import get_logger
+from config.main import Config, State
 
 from iac.aws_factory import AWSClientFactory
-from iac.bucket import Bucket
-from iac.lambda_fn import LambdaProcessor
-from iac.role import Role
-from iac.firehose import FireHose
 from iac.base import ResourceResult
+from iac.bucket import Bucket
 from iac.configs import (
     BucketConfig,
+    FirehoseConfig,
     LambdaConfig,
     RoleConfig,
-    FirehoseConfig,
 )
+from iac.firehose import FireHose
+from iac.lambda_fn import LambdaProcessor
 from iac.orchestrator import InfrastructureOrchestrator
+from iac.role import Role
 
 logger = get_logger(__name__)
 
@@ -44,7 +43,7 @@ def ensure_infra(update_env: bool = False, env_path: Path = Path(".env")) -> dic
     lambda_resource = LambdaProcessor(lambda_config, lam, iam_client=iam)
     orchestrator.register("lambda", lambda_resource)
 
-    def create_role(results: Dict[str, ResourceResult]) -> Role:
+    def create_role(results: dict[str, ResourceResult]) -> Role:
         bucket_res = results["bucket"]
         lambda_res = results["lambda"]
         role_config = RoleConfig.from_config(
@@ -54,7 +53,7 @@ def ensure_infra(update_env: bool = False, env_path: Path = Path(".env")) -> dic
 
     orchestrator.register("role", depends_on=["bucket", "lambda"], factory=create_role)
 
-    def create_firehose(results: Dict[str, ResourceResult]) -> FireHose:
+    def create_firehose(results: dict[str, ResourceResult]) -> FireHose:
         firehose_config = FirehoseConfig.from_config(
             cfg,
             role_arn=results["role"].role_arn,

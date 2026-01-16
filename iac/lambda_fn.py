@@ -9,10 +9,11 @@ import time
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
+
 from botocore.exceptions import ClientError
 
 from iac.base import Resource, ResourceResult
-from iac.configs import LambdaConfig, LambdaClient, IAMClient
+from iac.configs import IAMClient, LambdaClient, LambdaConfig
 from iac.constants import ErrorCodes
 from iac.retry import retry_on_iam_propagation
 from iac.validation import ResourceValidator
