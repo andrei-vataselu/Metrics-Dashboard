@@ -8,10 +8,10 @@ from config.env_updater import EnvUpdater
 from config.logging_config import get_logger
 
 from iac.aws_factory import AWSClientFactory
-from iac.bucket import Bucket, BucketResult
-from iac.lambda_fn import LambdaProcessor, LambdaResult
-from iac.role import Role, FirehoseRoleResult
-from iac.firehose import FireHose, FirehoseResult
+from iac.bucket import Bucket
+from iac.lambda_fn import LambdaProcessor
+from iac.role import Role
+from iac.firehose import FireHose
 from iac.base import ResourceResult
 from iac.configs import (
     BucketConfig,

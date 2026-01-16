@@ -49,7 +49,6 @@ def mock_env_vars_missing(monkeypatch):
 
 @pytest.fixture
 def mock_env_vars_invalid_int(monkeypatch):
-    """Set up environment with invalid integer values."""
     env_vars = {
         "DELIVERY_STREAM_NAME": "test-stream",
         "PREFIX": "data/",
@@ -73,7 +72,6 @@ def mock_env_vars_invalid_int(monkeypatch):
 def mock_s3_client():
     """Mock S3 client."""
     client = MagicMock()
-    # Default: bucket doesn't exist
     client.head_bucket.side_effect = ClientError(
         {"Error": {"Code": "404", "Message": "Not Found"}}, "HeadBucket"
     )
@@ -84,7 +82,6 @@ def mock_s3_client():
 def mock_lambda_client():
     """Mock Lambda client."""
     client = MagicMock()
-    # Default: lambda doesn't exist
     client.get_function.side_effect = ClientError(
         {"Error": {"Code": "ResourceNotFoundException", "Message": "Not Found"}},
         "GetFunction",
@@ -96,7 +93,6 @@ def mock_lambda_client():
 def mock_iam_client():
     """Mock IAM client."""
     client = MagicMock()
-    # Default: role doesn't exist
     client.get_role.side_effect = ClientError(
         {"Error": {"Code": "NoSuchEntity", "Message": "Not Found"}}, "GetRole"
     )
@@ -107,7 +103,6 @@ def mock_iam_client():
 def mock_firehose_client():
     """Mock Firehose client."""
     client = MagicMock()
-    # Default: stream doesn't exist
     client.describe_delivery_stream.side_effect = ClientError(
         {"Error": {"Code": "ResourceNotFoundException", "Message": "Not Found"}},
         "DescribeDeliveryStream",
@@ -154,7 +149,6 @@ def transform_dir(tmp_path):
     transform_path = tmp_path / "transform"
     transform_path.mkdir()
 
-    # Create app.py
     (transform_path / "app.py").write_text(
         'def handler(event, context):\n    return {"statusCode": 200}\n'
     )

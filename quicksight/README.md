@@ -1,17 +1,19 @@
 # QuickSight Dashboard Guide
 
-This directory contains examples and documentation for creating Amazon QuickSight dashboards from the metrics data collected by Roxxane. The data stored in S3 provides rich system metrics that can be visualized and analyzed to gain insights into system performance, resource utilization, and operational patterns.
+This directory contains examples and documentation for creating Amazon QuickSight dashboards from the metrics. The data stored in S3 provides rich system metrics that can be visualized and analyzed to gain insights into system performance, resource utilization, and operational patterns.
 
 ## Data Schema
 
 The metrics data includes the following fields:
 
 **Core Metrics:**
+
 - `cpu_pct` - CPU usage percentage
 - `ram_pct` - RAM usage percentage
 - `interval_s` - Collection interval in seconds
 
 **Network Metrics:**
+
 - `net_bytes_sent_per_s` - Network bytes sent per second
 - `net_bytes_recv_per_s` - Network bytes received per second
 - `net_packets_sent_per_s` - Network packets sent per second
@@ -22,12 +24,14 @@ The metrics data includes the following fields:
 - `net_drop_out_per_s` - Network output drops per second
 
 **Disk Metrics:**
+
 - `disk_read_bytes_per_s` - Disk read bytes per second
 - `disk_write_bytes_per_s` - Disk write bytes per second
 - `disk_read_ops_per_s` - Disk read operations per second
 - `disk_write_ops_per_s` - Disk write operations per second
 
 **System Information:**
+
 - `hostname` - Hostname of the system
 - `os` - Operating system name
 - `os_v` - Operating system version
@@ -37,6 +41,7 @@ The metrics data includes the following fields:
 - `session_id` - Session identifier
 
 **Time Fields:**
+
 - `ts` - Unix timestamp
 - `timestamp` - Formatted timestamp string
 - `date` - Date string (YYYY-MM-DD)
@@ -52,6 +57,7 @@ The metrics data includes the following fields:
 Monitor system resource utilization over time with key performance indicators.
 
 **Visualizations:**
+
 - Line chart: CPU usage percentage over time (grouped by hostname)
 - Line chart: RAM usage percentage over time (grouped by hostname)
 - Gauge chart: Current CPU and RAM usage averages
@@ -59,6 +65,7 @@ Monitor system resource utilization over time with key performance indicators.
 - Table: Top 10 hosts by average CPU usage
 
 **Use Cases:**
+
 - Identify resource-intensive periods
 - Detect capacity planning needs
 - Monitor resource trends over time
@@ -69,6 +76,7 @@ Monitor system resource utilization over time with key performance indicators.
 Analyze network throughput, errors, and packet statistics to identify network issues and bottlenecks.
 
 **Visualizations:**
+
 - Line chart: Network bytes sent/received per second over time
 - Bar chart: Network errors and drops by hostname
 - Scatter plot: Network throughput vs errors (identify problematic hosts)
@@ -76,6 +84,7 @@ Analyze network throughput, errors, and packet statistics to identify network is
 - Table: Hosts with highest error rates
 
 **Use Cases:**
+
 - Identify network congestion periods
 - Detect hosts with network issues
 - Monitor network capacity utilization
@@ -86,6 +95,7 @@ Analyze network throughput, errors, and packet statistics to identify network is
 Monitor disk read/write operations and throughput to understand storage performance.
 
 **Visualizations:**
+
 - Line chart: Disk read/write bytes per second over time
 - Bar chart: Disk operations per second by hostname
 - Scatter plot: Disk I/O vs CPU usage (identify I/O-bound systems)
@@ -93,6 +103,7 @@ Monitor disk read/write operations and throughput to understand storage performa
 - Table: Hosts with highest disk I/O rates
 
 **Use Cases:**
+
 - Identify I/O-intensive workloads
 - Detect storage bottlenecks
 - Monitor disk performance trends
@@ -103,6 +114,7 @@ Monitor disk read/write operations and throughput to understand storage performa
 Compare metrics across different hosts to identify outliers and performance differences.
 
 **Visualizations:**
+
 - Box plot: CPU usage distribution by hostname
 - Box plot: RAM usage distribution by hostname
 - Bar chart: Average metrics by hostname (side-by-side comparison)
@@ -110,6 +122,7 @@ Compare metrics across different hosts to identify outliers and performance diff
 - Table: Summary statistics by hostname
 
 **Use Cases:**
+
 - Identify underperforming or overperforming hosts
 - Compare system configurations
 - Detect hardware issues
@@ -120,6 +133,7 @@ Compare metrics across different hosts to identify outliers and performance diff
 Identify patterns in system behavior based on time of day, day of week, or date.
 
 **Visualizations:**
+
 - Heat map: CPU usage by hour and day of week
 - Line chart: Average metrics by hour of day
 - Bar chart: Average metrics by day of week
@@ -127,6 +141,7 @@ Identify patterns in system behavior based on time of day, day of week, or date.
 - Table: Peak usage times by metric type
 
 **Use Cases:**
+
 - Understand usage patterns
 - Plan maintenance windows
 - Identify seasonal trends
@@ -137,12 +152,14 @@ Identify patterns in system behavior based on time of day, day of week, or date.
 Compare metrics across different environments (dev, staging, production) to understand environment-specific behavior.
 
 **Visualizations:**
+
 - Bar chart: Average CPU/RAM by environment
 - Line chart: Metrics over time grouped by environment
 - Scatter plot: Environment comparison (CPU vs RAM)
 - Table: Summary statistics by environment
 
 **Use Cases:**
+
 - Compare environment performance
 - Validate environment parity
 - Identify environment-specific issues
@@ -153,6 +170,7 @@ Compare metrics across different environments (dev, staging, production) to unde
 Identify unusual patterns, spikes, or outliers in system metrics.
 
 **Visualizations:**
+
 - Line chart: Metrics with anomaly detection overlay
 - Scatter plot: Outlier detection (CPU vs RAM)
 - Table: Anomalous events with timestamps
@@ -160,6 +178,7 @@ Identify unusual patterns, spikes, or outliers in system metrics.
 - Heat map: Anomaly patterns by time
 
 **Use Cases:**
+
 - Detect system issues early
 - Identify security incidents
 - Monitor for unusual activity
@@ -208,27 +227,32 @@ Identify environment-specific usage patterns that may indicate configuration dif
 ## QuickSight Setup
 
 1. **Create Data Source**
+
    - Connect to your S3 bucket using AWS Glue as the data catalog
    - Select the Glue database and table created by the crawler
    - Use SPICE for better performance with large datasets
 
 2. **Import Data**
+
    - Choose the partitioned table from Glue
    - QuickSight will automatically recognize the partition structure
    - Set up incremental refresh if needed
 
 3. **Create Calculated Fields**
+
    - Network total throughput: `net_bytes_sent_per_s + net_bytes_recv_per_s`
    - Disk total I/O: `disk_read_bytes_per_s + disk_write_bytes_per_s`
    - CPU load category: `IF(cpu_pct > 80, "High", IF(cpu_pct > 50, "Medium", "Low"))`
    - RAM load category: Similar calculation for RAM
 
 4. **Build Visualizations**
+
    - Start with the Performance Monitoring dashboard as a foundation
    - Add filters for hostname, environment, and time ranges
    - Use parameters for dynamic filtering
 
 5. **Set Up Alerts**
+
    - Configure alerts for CPU > 90%
    - Configure alerts for RAM > 95%
    - Configure alerts for network errors > threshold
@@ -247,6 +271,7 @@ Identify environment-specific usage patterns that may indicate configuration dif
 ## Example Queries
 
 **Peak CPU Usage by Hour:**
+
 ```
 SELECT hour, AVG(cpu_pct) as avg_cpu
 FROM metrics_table
@@ -255,6 +280,7 @@ ORDER BY avg_cpu DESC
 ```
 
 **Hosts with Network Errors:**
+
 ```
 SELECT hostname, SUM(net_err_in_per_s + net_err_out_per_s) as total_errors
 FROM metrics_table
@@ -264,6 +290,7 @@ ORDER BY total_errors DESC
 ```
 
 **CPU vs RAM Correlation:**
+
 ```
 SELECT hostname, AVG(cpu_pct) as avg_cpu, AVG(ram_pct) as avg_ram
 FROM metrics_table

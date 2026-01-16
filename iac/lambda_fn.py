@@ -15,9 +15,10 @@ from iac.base import Resource, ResourceResult
 from iac.configs import LambdaConfig, LambdaClient, IAMClient
 from iac.constants import ErrorCodes
 from iac.retry import retry_on_iam_propagation
+from iac.validation import ResourceValidator
+
 
 LAMBDA_TRUST_POLICY_PATH = Path(__file__).parent / "lambda_trust_policy.json"
-from iac.validation import ResourceValidator
 
 logger = logging.getLogger(__name__)
 
@@ -28,10 +29,6 @@ class LambdaResult(ResourceResult):
 
 
 def _package_lambda_code(transform_dir: Path) -> bytes:
-    """
-    Package Lambda code with dependencies.
-    Installs dependencies from requirements.txt if it exists.
-    """
     zip_buffer = io.BytesIO()
     requirements_file = transform_dir / "requirements.txt"
 

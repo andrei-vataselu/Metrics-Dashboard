@@ -1,5 +1,3 @@
-"""Main entry point for the application."""
-
 import argparse
 
 from config.logging_config import setup_logging, get_logger
@@ -13,7 +11,7 @@ logger = get_logger(__name__)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Roxxane - Data ingestion pipeline")
+    parser = argparse.ArgumentParser(description="Metrics ingestion pipeline")
     parser.add_argument(
         "--update-env",
         action="store_true",
@@ -46,7 +44,7 @@ def main() -> None:
         "LAMBDA_ARN": st.LAMBDA_ARN,
     }
     logger.info(f"Runtime configuration: {runtime_config}")
-    ingester = Ingestion(cfg,client)
+    ingester = Ingestion(cfg, client)
     ingester.listen()
 
 

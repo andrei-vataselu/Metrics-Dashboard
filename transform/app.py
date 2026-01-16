@@ -43,10 +43,6 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
 def transform_record(
     data: Dict[str, Any], tz: pytz.BaseTzInfo
 ) -> tuple[Dict[str, Any], Dict[str, str]]:
-    """
-    Transform record and extract partition keys.
-    Returns: (transformed_data, partition_keys_dict)
-    """
     if not isinstance(data, dict):
         return data, {}
 

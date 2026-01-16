@@ -11,7 +11,6 @@ class TestFireHose:
 
     def test_stream_exists_active(self, mock_firehose_client):
         """Test detection of existing active stream."""
-        # Clear side_effect first, then set return_value
         mock_firehose_client.describe_delivery_stream.side_effect = None
         mock_firehose_client.describe_delivery_stream.return_value = {
             "DeliveryStreamDescription": {"DeliveryStreamStatus": "ACTIVE"}
@@ -34,8 +33,6 @@ class TestFireHose:
 
     def test_stream_creation(self, mock_firehose_client):
         """Test stream creation when it doesn't exist."""
-        # First call (in _exists) raises ResourceNotFoundException
-        # Subsequent calls (in get_stream_status) return ACTIVE
         call_count = [0]
 
         def side_effect(*args, **kwargs):
@@ -61,15 +58,13 @@ class TestFireHose:
         )
         firehose = FireHose(config, mock_firehose_client)
 
-        with patch("time.sleep"):  # Skip sleep in tests
+        with patch("time.sleep"):
             firehose.ensure_stream()
 
         mock_firehose_client.create_delivery_stream.assert_called_once()
 
     def test_stream_role_propagation_retry(self, mock_firehose_client):
         """Test retry logic for IAM role propagation."""
-        # First call (in _exists) raises ResourceNotFoundException
-        # Subsequent calls (in get_stream_status) return ACTIVE
         call_count = [0]
 
         def side_effect(*args, **kwargs):
@@ -83,7 +78,6 @@ class TestFireHose:
 
         mock_firehose_client.describe_delivery_stream.side_effect = side_effect
 
-        # First call fails with role not ready, second succeeds
         mock_firehose_client.create_delivery_stream.side_effect = [
             ClientError(
                 {
@@ -108,17 +102,13 @@ class TestFireHose:
         )
         firehose = FireHose(config, mock_firehose_client)
 
-        with patch("time.sleep"):  # Skip sleep in tests
+        with patch("time.sleep"):
             firehose.ensure_stream()
 
-        assert (
-            mock_firehose_client.create_delivery_stream.call_count == 2
-        )  # Retried once
+        assert mock_firehose_client.create_delivery_stream.call_count == 2
 
     def test_stream_creating_failed(self, mock_firehose_client):
         """Test handling of CREATING_FAILED status."""
-        # First call (in _exists) raises ResourceNotFoundException
-        # Subsequent calls (in get_stream_status) return CREATING_FAILED
         call_count = [0]
 
         def side_effect(*args, **kwargs):
