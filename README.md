@@ -157,7 +157,7 @@ Monitor S3 bucket metrics to verify data is being written successfully.
 
 ## Testing
 
-The test suite is organized by test type:
+The test suite is organized by test type. Note that the test suite was generated with AI assistance to ensure comprehensive coverage:
 
 - **Unit tests** - Mock AWS services, no credentials required
 - **Integration tests** - Require AWS credentials and real resources
@@ -182,16 +182,37 @@ The CI/CD pipeline runs unit tests automatically on push and pull requests.
 
 ```
 roxxane/
-├── config/           # Configuration management and environment handling
-├── iac/              # Infrastructure as Code - AWS resource provisioning
-├── metrics/          # System metrics collection
-├── pipeline/         # Data ingestion and delivery
-├── transform/        # Lambda transformation function
-├── tests/            # Test suite
-├── cloudformation/   # CloudFormation templates for Glue resources
-├── scripts/          # Utility scripts
-└── main.py           # Application entry point
+├── [config/](config/)           # Configuration management and environment handling
+├── [iac/](iac/)                # Infrastructure as Code - AWS resource provisioning
+├── [metrics/](metrics/)         # System metrics collection
+├── [pipeline/](pipeline/)      # Data ingestion and delivery
+├── [transform/](transform/)    # Lambda transformation function
+├── [tests/](tests/)            # Test suite (AI-generated)
+├── [cloudformation/](cloudformation/)  # CloudFormation templates for Glue resources
+├── [scripts/](scripts/)         # Utility scripts
+├── [quicksight/](quicksight/)   # QuickSight dashboard examples and documentation
+└── main.py                     # Application entry point
 ```
+
+### Directory Descriptions
+
+- **[config/](config/)** - Handles environment variable loading, configuration validation, and state management. Contains the main configuration dataclasses and environment updater utilities.
+
+- **[iac/](iac/)** - Infrastructure as Code module responsible for provisioning AWS resources. Implements the resource orchestration pattern with dependency management, retry logic, and idempotent operations.
+
+- **[metrics/](metrics/)** - System metrics collection using psutil. Provides CPU, RAM, network, and disk metric collection with configurable intervals and callback-based delivery.
+
+- **[pipeline/](pipeline/)** - Data ingestion pipeline that bridges metrics collection with Firehose delivery. Implements the abstract Pipeline interface for extensibility.
+
+- **[transform/](transform/)** - Lambda function code that processes records in transit. Enriches data with timestamps, extracts partition keys, and handles Parquet conversion.
+
+- **[tests/](tests/)** - Comprehensive test suite covering unit, integration, property-based, and performance tests. Test suite was generated with AI assistance.
+
+- **[cloudformation/](cloudformation/)** - CloudFormation templates for AWS Glue resources including database, table, and crawler definitions.
+
+- **[scripts/](scripts/)** - Utility scripts for manual Lambda packaging and other development tasks.
+
+- **[quicksight/](quicksight/)** - QuickSight dashboard examples, documentation, and visualizations showing how to analyze the collected metrics data.
 
 ## Design Decisions
 
