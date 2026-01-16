@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 from botocore.exceptions import ClientError
 
 from iac.orchestrator import InfrastructureOrchestrator
-from iac.bucket import Bucket, BucketResult
+from iac.bucket import Bucket
 from iac.configs import BucketConfig
 from config.main import Config
 

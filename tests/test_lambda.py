@@ -2,8 +2,7 @@
 
 import pytest
 from botocore.exceptions import ClientError
-from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from iac.lambda_fn import LambdaProcessor, LambdaResult
 from iac.lambda_fn import _package_lambda_code

@@ -1,8 +1,7 @@
 import pytest
 from moto import mock_aws
-from botocore.exceptions import ClientError
 
-from config.main import Config, State
+from config.main import Config
 from iac.aws_factory import AWSClientFactory
 from iac.bucket import Bucket, BucketResult
 from iac.lambda_fn import LambdaProcessor, LambdaResult
@@ -25,7 +24,6 @@ def mock_aws_services():
 
 @pytest.fixture
 def aws_clients(mock_aws_services, mock_env_vars):
-    import boto3
     import json
     region = mock_env_vars["REGION_NAME"]
     factory = AWSClientFactory(region=region)

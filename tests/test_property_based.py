@@ -1,5 +1,4 @@
 from hypothesis import given, strategies as st, assume, settings, HealthCheck
-import pytest
 
 from iac.validation import ResourceValidator
 

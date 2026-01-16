@@ -1,10 +1,6 @@
 """Tests for .env file update functionality."""
 
-import pytest
-from pathlib import Path
-
 from config.env_updater import EnvUpdater
-from config.main import State
 
 
 class TestEnvUpdate:

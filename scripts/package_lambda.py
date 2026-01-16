@@ -29,7 +29,7 @@ def package_lambda():
             with tempfile.TemporaryDirectory() as temp_dir:
                 temp_path = Path(temp_dir)
                 try:
-                    result = subprocess.run(
+                    subprocess.run(
                         [
                             sys.executable,
                             "-m",

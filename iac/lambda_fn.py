@@ -41,7 +41,7 @@ def _package_lambda_code(transform_dir: Path) -> bytes:
                 zip_file.write(file_path, arcname)
 
         if requirements_file.exists():
-            logger.info(f"Found requirements.txt, installing dependencies...")
+            logger.info("Found requirements.txt, installing dependencies...")
             with tempfile.TemporaryDirectory() as temp_dir:
                 temp_path = Path(temp_dir)
                 try:
