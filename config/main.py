@@ -25,7 +25,9 @@ def _require_int_env(key: str) -> int:
     try:
         return int(v)
     except ValueError as e:
-        raise RuntimeError(f"Environment variable {key} must be an integer. Got: {v}") from e
+        raise RuntimeError(
+            f"Environment variable {key} must be an integer. Got: {v}"
+        ) from e
 
 
 def _load_state(path: Path) -> Dict[str, Any]:
@@ -35,7 +37,6 @@ def _load_state(path: Path) -> Dict[str, Any]:
 
 
 def _optional_env(key: str) -> Optional[str]:
-    """Get optional environment variable."""
     return os.getenv(key)
 
 
@@ -89,10 +90,10 @@ class State:
     def load(path: Path = STATE_PATH) -> "State":
         raw = _load_state(path)
         version = raw.get("version", "0.0")
-        
+
         if version != State.version:
             raw = State._migrate(raw, version)
-        
+
         return State(
             version=raw.get("version", State.version),
             ROLE_ARN=raw.get("ROLE_ARN"),
@@ -103,10 +104,10 @@ class State:
     @staticmethod
     def _migrate(old_state: Dict[str, Any], old_version: str) -> Dict[str, Any]:
         migrated = old_state.copy()
-        
+
         if old_version == "0.0":
             migrated["version"] = "1.0"
-        
+
         return migrated
 
     def save(self, path: Path = STATE_PATH) -> None:

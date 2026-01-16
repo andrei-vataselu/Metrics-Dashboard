@@ -248,6 +248,26 @@ Verify the Firehose stream status is ACTIVE. Check CloudWatch metrics for delive
 **Partition discovery not working**
 Ensure the Glue crawler is configured and running. Verify the crawler has permissions to read from the S3 bucket. Check that the table schema matches the data structure.
 
+## Security
+
+This project takes security seriously. We use automated security scanning and dependency management:
+
+- **Dependabot** - Automatically checks for and updates vulnerable dependencies
+- **CodeQL** - Static code analysis to identify security vulnerabilities
+- **Bandit** - Python-specific security linting
+- **Safety** - Checks dependencies against known vulnerability databases
+
+Security issues can be reported privately by opening a security advisory in the GitHub repository.
+
+## Contributing
+
+Contributions are welcome. Please ensure:
+
+- All tests pass (`pytest tests/ -m unit`)
+- Code follows the project's style guidelines
+- New features include appropriate tests
+- Documentation is updated as needed
+
 ## License
 
-[Add your license information here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

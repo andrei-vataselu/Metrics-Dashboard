@@ -44,7 +44,6 @@ class Bucket(Resource[BucketResult]):
         return BucketResult(bucket_arn=arn)
 
     def _create(self, bucket_name: str) -> BucketResult:
-        """Create the bucket."""
         if not ResourceValidator.validate_bucket_name(bucket_name):
             raise ValueError(
                 f"Invalid bucket name: {bucket_name}. "

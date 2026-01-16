@@ -2,17 +2,17 @@ from __future__ import annotations
 
 import asyncio
 from pathlib import Path
-from typing import Dict
+
 
 from config.main import Config, State
 from config.env_updater import EnvUpdater
 from config.logging_config import get_logger
 
 from iac.aws_factory import AWSClientFactory
-from iac.bucket import Bucket, BucketResult
-from iac.lambda_fn import LambdaProcessor, LambdaResult
-from iac.role import Role, FirehoseRoleResult
-from iac.firehose import FireHose, FirehoseResult
+from iac.bucket import Bucket
+from iac.lambda_fn import LambdaProcessor
+from iac.role import Role
+from iac.firehose import FireHose
 from iac.configs import (
     BucketConfig,
     LambdaConfig,
@@ -23,7 +23,9 @@ from iac.configs import (
 logger = get_logger(__name__)
 
 
-async def ensure_infra_async(update_env: bool = False, env_path: Path = Path(".env")) -> dict:
+async def ensure_infra_async(
+    update_env: bool = False, env_path: Path = Path(".env")
+) -> dict:
     cfg = Config.from_env()
     region = cfg.REGION_NAME
 
