@@ -95,7 +95,9 @@ class TestLambdaProcessor:
             timeout=60,
             memory_mb=256,
         )
-        processor = LambdaProcessor(config, mock_lambda_client, iam_client=mock_iam_client)
+        processor = LambdaProcessor(
+            config, mock_lambda_client, iam_client=mock_iam_client
+        )
 
         with patch("iac.lambda_fn.Path", return_value=transform_dir), patch(
             "time.sleep"
@@ -132,14 +134,20 @@ class TestLambdaProcessor:
             timeout=60,
             memory_mb=256,
         )
-        processor = LambdaProcessor(config, mock_lambda_client, iam_client=mock_iam_client)
+        processor = LambdaProcessor(
+            config, mock_lambda_client, iam_client=mock_iam_client
+        )
 
-        with patch("iac.lambda_fn.Path", return_value=empty_transform_dir), patch("time.sleep"):
+        with patch("iac.lambda_fn.Path", return_value=empty_transform_dir), patch(
+            "time.sleep"
+        ):
             with pytest.raises(ValueError, match="transform directory is empty"):
                 processor.ensure()
 
     @pytest.mark.unit
-    def test_lambda_missing_transform_directory(self, mock_lambda_client, mock_iam_client, tmp_path):
+    def test_lambda_missing_transform_directory(
+        self, mock_lambda_client, mock_iam_client, tmp_path
+    ):
         """Test error when transform directory doesn't exist."""
         mock_lambda_client.get_function.side_effect = ClientError(
             {"Error": {"Code": "ResourceNotFoundException"}}, "GetFunction"
@@ -163,7 +171,9 @@ class TestLambdaProcessor:
             timeout=60,
             memory_mb=256,
         )
-        processor = LambdaProcessor(config, mock_lambda_client, iam_client=mock_iam_client)
+        processor = LambdaProcessor(
+            config, mock_lambda_client, iam_client=mock_iam_client
+        )
 
         missing_dir = tmp_path / "nonexistent"
         with patch("iac.lambda_fn.Path", return_value=missing_dir), patch("time.sleep"):
@@ -210,7 +220,9 @@ class TestLambdaProcessor:
             timeout=60,
             memory_mb=256,
         )
-        processor = LambdaProcessor(config, mock_lambda_client, iam_client=mock_iam_client)
+        processor = LambdaProcessor(
+            config, mock_lambda_client, iam_client=mock_iam_client
+        )
 
         with patch("iac.lambda_fn.Path", return_value=transform_dir), patch(
             "time.sleep"
