@@ -28,17 +28,17 @@ class TestConcurrentResourceCreation:
             )
             mock_s3.create_bucket.return_value = {}
             mock_s3.get_bucket_location.return_value = {"LocationConstraint": "us-east-1"}
-            
+
             bucket_config = BucketConfig.from_config(mock_config, mock_config.REGION_NAME)
             bucket_resource = Bucket(bucket_config, mock_s3)
             orchestrator.register(f"bucket_{thread_id}", bucket_resource)
-            
+
             return orchestrator.ensure_all()
-        
+
         with ThreadPoolExecutor(max_workers=5) as executor:
             futures = [executor.submit(create_bucket, i) for i in range(5)]
             results = [future.result() for future in as_completed(futures)]
-        
+
         assert len(results) == 5
         for result in results:
             assert len(result) == 1
@@ -62,7 +62,7 @@ class TestConcurrentResourceCreation:
 
         threads = []
         results = []
-        
+
         def worker(thread_id):
             result = run_orchestrator(thread_id)
             results.append(result)
@@ -74,7 +74,7 @@ class TestConcurrentResourceCreation:
 
         for thread in threads:
             thread.join()
-        
+
         assert len(results) == 10
         for result in results:
             assert len(result) == 1
@@ -114,17 +114,17 @@ class TestConcurrentResourceCreation:
             )
             mock_s3.create_bucket.return_value = {}
             mock_s3.get_bucket_location.return_value = {"LocationConstraint": "us-east-1"}
-            
+
             bucket_config = BucketConfig.from_config(mock_config, mock_config.REGION_NAME)
             bucket_resource = Bucket(bucket_config, mock_s3)
             orchestrator.register(f"bucket_{thread_id}", bucket_resource)
-            
+
             return orchestrator.ensure_all()
-        
+
         with ThreadPoolExecutor(max_workers=5) as executor:
             futures = [executor.submit(create_infrastructure, i) for i in range(5)]
             results = [future.result() for future in as_completed(futures)]
-        
+
         assert len(results) == 5
         for result in results:
             assert len(result) == 1

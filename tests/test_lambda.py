@@ -113,7 +113,7 @@ class TestLambdaProcessor:
         mock_lambda_client.get_function.side_effect = ClientError(
             {"Error": {"Code": "ResourceNotFoundException"}}, "GetFunction"
         )
-        
+
         # Mock role creation so we can get to the zip_bytes check
         mock_iam_client.get_role.side_effect = ClientError(
             {"Error": {"Code": "NoSuchEntity"}}, "GetRole"
@@ -144,7 +144,7 @@ class TestLambdaProcessor:
         mock_lambda_client.get_function.side_effect = ClientError(
             {"Error": {"Code": "ResourceNotFoundException"}}, "GetFunction"
         )
-        
+
         # Mock role creation so we can get to the zip_bytes check
         mock_iam_client.get_role.side_effect = ClientError(
             {"Error": {"Code": "NoSuchEntity"}}, "GetRole"

@@ -28,7 +28,7 @@ def aws_clients(mock_aws_services, mock_env_vars):
     region = mock_env_vars["REGION_NAME"]
     factory = AWSClientFactory(region=region)
     iam = factory.create_iam_client()
-
+    
     lambda_role_name = f"{mock_env_vars['LAMBDA_FUNCTION_NAME']}-execution-role"
     trust_policy = {
         "Version": "2012-10-17",
@@ -40,7 +40,7 @@ def aws_clients(mock_aws_services, mock_env_vars):
             }
         ],
     }
-    
+
     try:
         iam.create_role(
             RoleName=lambda_role_name,
@@ -90,11 +90,13 @@ class TestIntegrationInfrastructure:
         bucket_config = BucketConfig.from_config(test_config, test_config.REGION_NAME)
         bucket_resource = Bucket(bucket_config, aws_clients["s3"])
         orchestrator.register("bucket", bucket_resource)
-        
+
         lambda_config = LambdaConfig.from_config(test_config, role_arn=None)
-        lambda_resource = LambdaProcessor(lambda_config, aws_clients["lambda"], iam_client=aws_clients["iam"])
+        lambda_resource = LambdaProcessor(
+            lambda_config, aws_clients["lambda"], iam_client=aws_clients["iam"]
+        )
         orchestrator.register("lambda", lambda_resource)
-        
+
         def create_role(results):
             bucket_res = results["bucket"]
             lambda_res = results["lambda"]
@@ -144,7 +146,7 @@ class TestIntegrationInfrastructure:
 
         result1 = bucket_resource.ensure()
         result2 = bucket_resource.ensure()
-        
+
         assert result1.bucket_arn == result2.bucket_arn
 
     @pytest.mark.integration
@@ -154,11 +156,13 @@ class TestIntegrationInfrastructure:
         bucket_config = BucketConfig.from_config(test_config, test_config.REGION_NAME)
         bucket_resource = Bucket(bucket_config, aws_clients["s3"])
         orchestrator.register("bucket", bucket_resource)
-        
+
         lambda_config = LambdaConfig.from_config(test_config, role_arn=None)
-        lambda_resource = LambdaProcessor(lambda_config, aws_clients["lambda"], iam_client=aws_clients["iam"])
+        lambda_resource = LambdaProcessor(
+            lambda_config, aws_clients["lambda"], iam_client=aws_clients["iam"]
+        )
         orchestrator.register("lambda", lambda_resource)
-        
+
         def create_role(results):
             bucket_res = results["bucket"]
             lambda_res = results["lambda"]
@@ -201,6 +205,6 @@ class TestIntegrationInfrastructure:
 
         orchestrator.register("resource1", depends_on=["resource2"], factory=factory1)
         orchestrator.register("resource2", depends_on=["resource1"], factory=factory2)
-        
+
         with pytest.raises(RuntimeError, match="Circular dependency"):
             orchestrator.ensure_all()
