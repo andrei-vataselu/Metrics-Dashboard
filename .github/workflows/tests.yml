@@ -44,7 +44,7 @@ jobs:
                   pytest tests/test_property_based.py -v --tb=short -m "unit"
 
             - name: Upload coverage to Codecov
-              uses: codecov/codecov-action@v3
+              uses: codecov/codecov-action@v5
               with:
                   file: ./coverage.xml
                   flags: unittests
