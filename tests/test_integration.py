@@ -28,7 +28,7 @@ def aws_clients(mock_aws_services, mock_env_vars):
     region = mock_env_vars["REGION_NAME"]
     factory = AWSClientFactory(region=region)
     iam = factory.create_iam_client()
-    
+
     lambda_role_name = f"{mock_env_vars['LAMBDA_FUNCTION_NAME']}-execution-role"
     trust_policy = {
         "Version": "2012-10-17",

@@ -149,7 +149,7 @@ class TestConcurrentResourceCreation:
 
         tasks = [create_bucket_async(i) for i in range(5)]
         results = await asyncio.gather(*tasks)
-        
+
         assert len(results) == 5
         for result in results:
             assert len(result) == 1
