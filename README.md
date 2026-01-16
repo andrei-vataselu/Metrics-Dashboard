@@ -1,6 +1,6 @@
-# Roxxane
+# Metrics Dashboard
 
-Roxxane is a data ingestion pipeline designed to collect system metrics and stream them to AWS Kinesis Firehose for processing and storage. The system automatically provisions AWS infrastructure, transforms data in real-time, and stores it in S3 with dynamic partitioning for efficient querying.
+This project is a data ingestion pipeline designed to collect system metrics and stream them to AWS Kinesis Firehose for processing and storage. The system automatically provisions AWS infrastructure, transforms data in real-time, and stores it in S3 with dynamic partitioning for efficient querying.
 
 ## Architecture Overview
 
@@ -36,6 +36,7 @@ The `config/` module centralizes configuration through environment variables. It
 ### Infrastructure Dependencies
 
 The orchestrator manages the following dependency graph:
+
 - Bucket and Lambda can be created in parallel (no dependencies)
 - Role depends on both Bucket and Lambda (needs their ARNs)
 - Firehose depends on Role, Bucket, and Lambda (needs all ARNs)
@@ -55,8 +56,8 @@ This ensures resources are provisioned in the correct order, with parallel execu
 Clone the repository and install dependencies:
 
 ```bash
-git clone <repository-url>
-cd roxxane
+git clone https://github.com/andrei-vataselu/Metrics-Dashboard.git
+cd Metrics-Dashboard
 pip install -r requirements.txt
 ```
 
@@ -77,6 +78,7 @@ cp .env.example .env
 Edit `.env` with your configuration:
 
 **Required Variables:**
+
 - `DELIVERY_STREAM_NAME` - Name for the Kinesis Firehose delivery stream
 - `PREFIX` - S3 prefix for data storage (e.g., `analytics/`)
 - `BUFFERING_SIZE` - Buffer size in MB (integer, e.g., `5`)
@@ -91,6 +93,7 @@ Edit `.env` with your configuration:
 - `LAMBDA_MEMORY_MB` - Lambda memory in MB (integer)
 
 **Optional Variables:**
+
 - `GLUE_DATABASE_NAME` - Glue database name for Parquet schema
 - `GLUE_TABLE_NAME` - Glue table name for Parquet schema
 - `LOG_LEVEL` - Logging level (default: `INFO`)
@@ -104,6 +107,7 @@ python main.py --update-env
 ```
 
 This will:
+
 1. Create or verify the S3 bucket
 2. Package and deploy the Lambda function
 3. Create IAM roles with appropriate permissions
@@ -150,6 +154,7 @@ The system detects existing Lambda functions and updates their code automaticall
 ### Monitoring
 
 Check CloudWatch Logs for:
+
 - Firehose delivery stream logs: `/aws/kinesis_firehose/<stream-name>`
 - Lambda function logs: `/aws/lambda/<function-name>`
 
@@ -181,38 +186,30 @@ The CI/CD pipeline runs unit tests automatically on push and pull requests.
 ## Project Structure
 
 ```
-roxxane/
-├── [config/](config/)           # Configuration management and environment handling
-├── [iac/](iac/)                # Infrastructure as Code - AWS resource provisioning
-├── [metrics/](metrics/)         # System metrics collection
-├── [pipeline/](pipeline/)      # Data ingestion and delivery
-├── [transform/](transform/)    # Lambda transformation function
-├── [tests/](tests/)            # Test suite (AI-generated)
-├── [.aws/cloudformation/](.aws/cloudformation/)  # CloudFormation templates for Glue resources
-├── [scripts/](scripts/)         # Utility scripts
-├── [quicksight/](quicksight/)   # QuickSight dashboard examples and documentation
-└── main.py                     # Application entry point
+metrics-dashboard/
+├── config/           # Configuration management and environment handling
+├── iac/              # Infrastructure as Code - AWS resource provisioning
+├── metrics/          # System metrics collection
+├── pipeline/         # Data ingestion and delivery
+├── transform/        # Lambda transformation function
+├── tests/            # Test suite (AI-generated)
+├── .aws/cloudformation/  # CloudFormation templates for Glue resources
+├── scripts/          # Utility scripts
+├── quicksight/       # QuickSight dashboard examples and documentation
+└── main.py           # Application entry point
 ```
 
 ### Directory Descriptions
 
-- **[config/](config/)** - Handles environment variable loading, configuration validation, and state management. Contains the main configuration dataclasses and environment updater utilities.
-
-- **[iac/](iac/)** - Infrastructure as Code module responsible for provisioning AWS resources. Implements the resource orchestration pattern with dependency management, retry logic, and idempotent operations.
-
-- **[metrics/](metrics/)** - System metrics collection using psutil. Provides CPU, RAM, network, and disk metric collection with configurable intervals and callback-based delivery.
-
-- **[pipeline/](pipeline/)** - Data ingestion pipeline that bridges metrics collection with Firehose delivery. Implements the abstract Pipeline interface for extensibility.
-
-- **[transform/](transform/)** - Lambda function code that processes records in transit. Enriches data with timestamps, extracts partition keys, and handles Parquet conversion.
-
-- **[tests/](tests/)** - Comprehensive test suite covering unit, integration, property-based, and performance tests. Test suite was generated with AI assistance.
-
-- **[.aws/cloudformation/](.aws/cloudformation/)** - CloudFormation templates for AWS Glue resources including database, table, and crawler definitions.
-
-- **[scripts/](scripts/)** - Utility scripts for manual Lambda packaging and other development tasks.
-
-- **[quicksight/](quicksight/)** - QuickSight dashboard examples, documentation, and visualizations showing how to analyze the collected metrics data.
+- **config/** - Handles environment variable loading, configuration validation, and state management. Contains the main configuration dataclasses and environment updater utilities.
+- **iac/** - Infrastructure as Code module responsible for provisioning AWS resources. Implements the resource orchestration pattern with dependency management, retry logic, and idempotent operations.
+- **metrics/** - System metrics collection using psutil. Provides CPU, RAM, network, and disk metric collection with configurable intervals and callback-based delivery.
+- **pipeline/** - Data ingestion pipeline that bridges metrics collection with Firehose delivery. Implements the abstract Pipeline interface for extensibility.
+- **transform/** - Lambda function code that processes records in transit. Enriches data with timestamps, extracts partition keys, and handles Parquet conversion.
+- **tests/** - Comprehensive test suite covering unit, integration, property-based, and performance tests. Test suite was generated with AI assistance.
+- **.aws/cloudformation/** - CloudFormation templates for AWS Glue resources including database, table, and crawler definitions.
+- **scripts/** - Utility scripts for manual Lambda packaging and other development tasks.
+- **quicksight/** - QuickSight dashboard examples, documentation, and visualizations showing how to analyze the collected metrics data.
 
 ## Design Decisions
 

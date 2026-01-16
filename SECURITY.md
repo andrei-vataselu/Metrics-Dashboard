@@ -4,17 +4,17 @@
 
 We actively support the following versions with security updates:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| Latest  | :white_check_mark: |
-| < Latest| :x:                |
+| Version  | Supported          |
+| -------- | ------------------ |
+| Latest   | :white_check_mark: |
+| < Latest | :x:                |
 
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability, please follow these steps:
 
 1. **Do not** open a public GitHub issue
-2. Email the maintainers directly or open a [GitHub Security Advisory](https://github.com/your-org/roxxane/security/advisories/new)
+2. Email the maintainers directly or open a [GitHub Security Advisory](https://github.com/andrei-vataselu/Metrics-Dashboard/security/advisories/new)
 3. Include the following information:
    - Description of the vulnerability
    - Steps to reproduce
