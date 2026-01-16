@@ -128,12 +128,12 @@ class TestIntegrationInfrastructure:
         assert "lambda" in results
         assert "role" in results
         assert "firehose" in results
-        
+
         assert isinstance(results["bucket"], BucketResult)
         assert isinstance(results["lambda"], LambdaResult)
         assert isinstance(results["role"], FirehoseRoleResult)
         assert isinstance(results["firehose"], FirehoseResult)
-        
+
         assert results["bucket"].bucket_arn == f"arn:aws:s3:::{test_config.BUCKET_NAME}"
         assert test_config.LAMBDA_FUNCTION_NAME in results["lambda"].lambda_arn
         assert test_config.ROLE_NAME in results["role"].role_arn
@@ -178,7 +178,7 @@ class TestIntegrationInfrastructure:
         assert "bucket" in results
         assert "lambda" in results
         assert "role" in results
-        
+
         assert results["role"].role_arn is not None
         assert test_config.BUCKET_NAME in results["bucket"].bucket_arn
         assert test_config.LAMBDA_FUNCTION_NAME in results["lambda"].lambda_arn
