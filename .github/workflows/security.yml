@@ -31,7 +31,7 @@ jobs:
           bandit -r . -f txt --skip B101,B110,B404,B603,B607 || true
 
       - name: Upload Bandit results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: bandit-report
@@ -58,7 +58,7 @@ jobs:
           safety check
 
       - name: Upload Safety results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: safety-report
